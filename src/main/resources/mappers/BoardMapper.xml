@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mappers.BoardMapper">
+	<insert id="insert">
+		insert into tbl_board(title, content, writer) 
+		values (#{title}, #{content}, #{writer});
+	</insert>
+	<select id="selectByNo" resultType="Board">
+		select * from tbl_board
+		where bno = #{bno}  
+	</select>
+	<select id="list" resultType="Board">
+		select * from tbl_board order by bno desc
+	</select> 
+	<update id="update">
+		update tbl_board set title = #{title}, content = #{content}, writer = #{writer} where bno = #{bno} 
+	</update>
+	<delete id="delete">
+		delete from tbl_board where bno = #{bno}
+	</delete>
+	 <update id="updateCnt">
+		update tbl_board set viewcnt = #{viewcnt} where bno = #{bno}
+	</update>
+	<select id="listPage" resultType="Board">
+		select * from tbl_board 
+			order by bno desc limit #{page}, 10;
+	</select>
+	<select id="listCriteria" resultType="Board">
+		select * from tbl_board 
+			order by bno desc limit #{pageStart}, #{perPageNum};
+	</select>
+	<!-- #{pageStart } : Criteria 클래스의 getPageStart 함수 -->
+	<select id="totalCount" resultType="int">
+		select count(bno) from tbl_board
+	</select>
+</mapper>  
+  
