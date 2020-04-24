@@ -119,7 +119,7 @@
 		<h3 class="timeline-header"><strong>{{rno}}</strong> - {{replyer}}</h3>
 		<div class="timeline-body">{{replytext}}</div>
 		<div class="timeline-footer">
-			<a class="btn btn-primary btn-xs mod" data-rno={{rno}} data-text={{replytext}} data-toggle="modal" data-target="#modifyModal">Modify</a>
+			<a class="btn btn-primary btn-xs mod" data-rno="{{rno}}" data-text="{{replytext}}" data-toggle="modal" data-target="#modifyModal">Modify</a>
 			<a class="btn btn-danger btn-xs del" data-rno={{rno}}>Delete</a>
 		</div>
 	</div>
@@ -199,7 +199,6 @@ function getPageList(page){
 		$(document).on("click", ".mod", function(){
 			var rno = $(this).attr("data-rno");
 			var text = $(this).attr("data-text");
-			console.log(text);
 			$(".modal-title").html(rno);
 			$("#replytext").val(text);
 			
@@ -234,10 +233,8 @@ function getPageList(page){
 		
 		
 		$(document).on("click", "#btnModSave", function(){
-			var rno = $(this).attr("data-rno");
-			var text = $(this).attr("data-text");
-
-			
+			var rno = $(".modal-title").html();
+			var text = $("#replytext").val();
 			doUpdate(rno, text);
 			$(".close").click();
 		})
