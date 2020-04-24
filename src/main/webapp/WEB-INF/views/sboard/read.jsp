@@ -87,6 +87,27 @@
 </div>
 </div>
 
+<!-- 수정 버튼 누를 때 팝업 부분 -->
+<div id="modifyModal" class="modal modal-primary fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+				<p>   
+					<input type="text" id="replytext" class="form-control">
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" id="btnModSave">Modify</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script id="template" type="text/x-handlebars-template">
 {{#each.}}
 <li class="replyli" data-rno="{{rno}}">
@@ -98,7 +119,7 @@
 		<h3 class="timeline-header"><strong>{{rno}}</strong> - {{replyer}}</h3>
 		<div class="timeline-body">{{replytext}}</div>
 		<div class="timeline-footer">
-			<a class="btn btn-primary btn-xs mod" data-rno={{rno}} data-text={{replytext}}>Modify</a>
+			<a class="btn btn-primary btn-xs mod" data-rno={{rno}} data-text={{replytext}} data-toggle="modal" data-target="#modifyModal">Modify</a>
 			<a class="btn btn-danger btn-xs del" data-rno={{rno}}>Delete</a>
 		</div>
 	</div>
@@ -175,17 +196,52 @@ function getPageList(page){
 			})
 		})
 
-	/* 	$(document).on("click", ".mod", function(){
-			$("#modPopup").css("display", "block");
+		$(document).on("click", ".mod", function(){
 			var rno = $(this).attr("data-rno");
 			var text = $(this).attr("data-text");
+			console.log(text);
+			$(".modal-title").html(rno);
+			$("#replytext").val(text);
 			
+			$("#btnModSave").attr("data-rno", rno).attr("data-text", text);
+			/* 
 			$(".modRno").html(rno);   
-			$("#modText").val(text);
+			$("#modText").val(text); */
 			
 			    
 		})
-		 */
+		
+		function doUpdate(rno, text){
+		var json = JSON.stringify({"replytext":text});
+		$.ajax({
+			url : "${pageContext.request.contextPath}/replies/"+rno,
+			method : "PUT",
+			headers : {"Content-Type":"application/json"},
+			data : json,
+			dataType : "text",
+			success : function(res){
+				//console.log(res);
+				if(res == "SUCCESS"){
+					alert("댓글이 수정되었습니다.");
+					
+					//리스트 갱신
+					getPageList(1);
+				}
+			}      
+			
+		})
+	}
+		
+		
+		$(document).on("click", "#btnModSave", function(){
+			var rno = $(this).attr("data-rno");
+			var text = $(this).attr("data-text");
+
+			
+			doUpdate(rno, text);
+			$(".close").click();
+		})
+		 
 
 		 $("#btnReplyAdd").click(function(){
 				//댓글 등록
