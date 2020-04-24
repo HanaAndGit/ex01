@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yi.domain.Board;
 import com.yi.domain.Criteria;
+import com.yi.domain.SearchCriteria;
 import com.yi.persistence.BoardDAO;
 
 @Repository
@@ -49,4 +50,16 @@ public class BoardService {
 	public int totalCount() throws Exception{
 		return dao.totalCount();
 	}
-}
+	
+	public List<Board> listSearchCriteria(SearchCriteria cri) throws Exception{
+		return dao.listSearchCriteria(cri);
+	}
+	
+	public int totalSearchCount(SearchCriteria cri) throws Exception{
+		return dao.totalSearchCount(cri);
+	}
+	
+	public Board readSearchByNo(int bno) throws Exception {
+		return dao.readSearchByNo(bno);
+	}
+}      

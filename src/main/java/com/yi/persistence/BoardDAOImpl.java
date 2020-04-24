@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yi.domain.Board;
 import com.yi.domain.Criteria;
+import com.yi.domain.SearchCriteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -68,6 +69,21 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int totalCount() throws Exception {
 		return sqlSession.selectOne(namespace + "totalCount");
+	}
+
+	@Override
+	public List<Board> listSearchCriteria(SearchCriteria cri) throws Exception {
+		return sqlSession.selectList(namespace + "listSearchCriteria", cri);  
+	}
+
+	@Override
+	public int totalSearchCount(SearchCriteria cri) throws Exception {
+		return sqlSession.selectOne(namespace + "totalSearchCount", cri);
+	}
+
+	@Override
+	public Board readSearchByNo(int bno) throws Exception {
+		return sqlSession.selectOne(namespace + "selectSearchByNo", bno);
 	}
 	
 	
